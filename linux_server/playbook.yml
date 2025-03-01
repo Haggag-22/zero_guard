@@ -1,0 +1,11 @@
+---
+- name: Run ifconfig on Linux Server
+  hosts: linux_server
+  tasks:
+    - name: Run ifconfig
+      ansible.builtin.command: ifconfig
+      register: ifconfig_output
+
+    - name: Show ifconfig output
+      ansible.builtin.debug:
+        var: ifconfig_output.stdout
