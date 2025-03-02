@@ -1,0 +1,20 @@
+# Force LF for all shell scripts (Linux scripts)
+*.sh text eol=lf
+
+# Force LF for Ansible playbooks
+*.yml text eol=lf
+
+# Force LF for PowerShell scripts (Windows automation, better compatibility)
+*.ps1 text eol=lf
+
+# Force LF for Python scripts (if you write some automation in Python)
+*.py text eol=lf
+
+# Force LF for Markdown files (documentation, notes, README)
+*.md text eol=lf
+
+# Optional - enforce LF for logs if you save any in the repo
+*.log text eol=lf
+
+# This tells Git to normalize line endings to LF in the repo
+* text=auto
