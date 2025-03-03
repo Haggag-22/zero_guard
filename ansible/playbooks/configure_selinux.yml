@@ -6,8 +6,8 @@
   tasks:
     - name: Set Required SELinux Booleans
       ansible.builtin.seboolean:
-        name: "{{ items.name }}"
-        state: "{{ items.state }}"
+        name: "{{ item.name }}"
+        state: "{{ item.state }}"
         persistent: yes
       loop:
         - { name: "httpd_can_network_connect", state: "yes" }
