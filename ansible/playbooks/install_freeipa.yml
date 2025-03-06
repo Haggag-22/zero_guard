@@ -3,8 +3,8 @@
   hosts: ipa_servers
   become: true
   vars:
-    ipa_domain: "linuxserver"  # Change to your domain
-    ipa_realm: "linuxserver"   # Change to your realm
+    ipa_domain: "linuxserver"  
+    ipa_realm: "linuxserver"   
     
 
   tasks:
