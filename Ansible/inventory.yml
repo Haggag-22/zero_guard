@@ -1,0 +1,21 @@
+all:
+  hosts:
+    pep:
+      ansible_host: kong.zerotrust.local
+      ansible_user: pep
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa
+    pdp:
+      ansible_host: pdp.zerotrust.local
+      ansible_user: pdp
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa
+    threat_mangement:
+      ansible_host: threatmangement.zerotrust.local
+      ansible_user: threatmangement
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa
+
+  children:
+    zero_trust:
+      hosts:
+        pep:
+        pdp:
+        threat_mangement:
