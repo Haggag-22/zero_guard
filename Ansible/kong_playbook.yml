@@ -2,17 +2,35 @@
   hosts: pep
   become: yes
   vars:
+    # The remote directory on the PEP host where we'll store Docker Compose files
     deploy_dir: "/opt/zero_guard/kong"
+
+    # The local path (on your control node) where Docker/Kong_API_Gateway is stored
+    # Adjust if your local repo structure differs.
+    local_compose_dir: "Docker/Kong_API_Gateway"
+
+    # The Docker Compose file name (inside Docker/Kong_API_Gateway)
     compose_file: "docker-compose.yml"
+
   tasks:
-    - name: Ensure deployment directory exists
+    - name: Ensure base directory on remote
       file:
         path: "{{ deploy_dir }}"
         state: directory
         mode: '0755'
 
+    - name: Copy Docker Compose folder to remote
+      # 'synchronize' requires 'rsync' on both control node & remote, but is very convenient.
+      # Alternatively, you can use 'copy' module if the folder isn't large.
+      synchronize:
+        src: "{{ local_compose_dir }}/"
+        dest: "{{ deploy_dir }}/Docker/Kong_API_Gateway/"
+        delete: yes
+        archive: yes
+        recursive: yes
+
     - name: Run Docker Compose to deploy/update Kong
-      command: docker-compose -f {{ deploy_dir }}/{{ compose_file }} up -d
+      command: docker-compose -f "{{ deploy_dir }}/Docker/Kong_API_Gateway/{{ compose_file }}" up -d
       args:
         chdir: "{{ deploy_dir }}/Docker/Kong_API_Gateway"
       register: compose_output
