@@ -4,5 +4,5 @@
 
   tasks:
     - name: Run Docker Compose
-      command: docker-compose -f /Docker/Kong_API_Gateway/docker-compose.yml up -d
+      command: docker-compose -f /home/pep/Desktop/zero_guard/Docker/Kong_API_Gateway/docker-compose.yml up -d
       
