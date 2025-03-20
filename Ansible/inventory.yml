@@ -1,7 +1,7 @@
 all:
   hosts:
     pep:
-      ansible_host: kong.zerotrust.local
+      ansible_host: kong.zerotrust.loca
       ansible_user: pep
       ansible_ssh_private_key_file: ~/.ssh/id_rsa
     pdp:
