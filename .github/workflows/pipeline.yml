@@ -8,13 +8,12 @@ on:
 jobs:
   deploy-kong:
     runs-on: ubuntu-latest
-
     env:
-      TARGET_DIR: '/opt/zero_guard/kong'        
-      INVENTORY: 'inventory.yaml'                 
-      PLAYBOOK: 'kong_playbook.yml'              
-      SSH_USER: ${{ secrets.SSH_USER_KONG }}       
-      PEP_HOST: ${{ secrets.PEP_HOST_KONG }}       
+      TARGET_DIR: '/opt/zero_guard/kong'
+      INVENTORY: 'Ansible/inventory.yml'
+      PLAYBOOK: 'Ansible/kong_playbook.yml'
+      SSH_USER: ${{ secrets.SSH_USER_KONG }}
+      PEP_HOST: ${{ secrets.PEP_HOST_KONG }}
 
     steps:
       - name: Checkout Code
@@ -25,11 +24,10 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY_KONG }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          # Disable strict host key checking (use with caution in production)
           echo "Host *" >> ~/.ssh/config
           echo "    StrictHostKeyChecking no" >> ~/.ssh/config
 
-      - name: Sync Code to Target (Kong)
+      - name: Sync Code to Target
         run: |
           rsync -avz --delete . $SSH_USER@$PEP_HOST:${TARGET_DIR}/
         env:

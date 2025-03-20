@@ -1,10 +1,9 @@
----
 - name: Deploy Kong on PEP Host
   hosts: pep
   become: yes
   vars:
-    deploy_dir: "/opt/zero_guard"          
-    compose_file: "docker-compose.yml" 
+    deploy_dir: "/opt/zero_guard/kong"
+    compose_file: "docker-compose.yml"
   tasks:
     - name: Ensure deployment directory exists
       file:
@@ -15,7 +14,7 @@
     - name: Run Docker Compose to deploy/update Kong
       command: docker-compose -f {{ deploy_dir }}/{{ compose_file }} up -d
       args:
-        chdir: "{{ deploy_dir }}"
+        chdir: "{{ deploy_dir }}/Docker/Kong_API_Gateway"
       register: compose_output
 
     - name: Show Docker Compose output
