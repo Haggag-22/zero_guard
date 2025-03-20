@@ -1,0 +1,42 @@
+name: Deploy Kong to PEP Machine
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-kong:
+    runs-on: ubuntu-latest
+
+    env:
+      TARGET_DIR: '/opt/zero_guard/kong'        
+      INVENTORY: 'inventory.yaml'                 
+      PLAYBOOK: 'kong_playbook.yml'              
+      SSH_USER: ${{ secrets.SSH_USER_KONG }}       
+      PEP_HOST: ${{ secrets.PEP_HOST_KONG }}       
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH key for Kong
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY_KONG }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          # Disable strict host key checking (use with caution in production)
+          echo "Host *" >> ~/.ssh/config
+          echo "    StrictHostKeyChecking no" >> ~/.ssh/config
+
+      - name: Sync Code to Target (Kong)
+        run: |
+          rsync -avz --delete . $SSH_USER@$PEP_HOST:${TARGET_DIR}/
+        env:
+          RSYNC_RSH: 'ssh -o StrictHostKeyChecking=no'
+
+      - name: Deploy Kong with Ansible
+        run: |
+          ansible-playbook -i ${INVENTORY} ${PLAYBOOK}
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: 'false'
