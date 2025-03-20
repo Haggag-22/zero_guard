@@ -6,7 +6,7 @@ services:
     container_name: kong
     restart: unless-stopped
     networks:
-      - zero-guard-net
+      - zeroguard-net
     environment:
       KONG_DATABASE: "off"  # DB-less mode
       KONG_DECLARATIVE_CONFIG: "/opt/kong/kong.yml"
@@ -30,7 +30,7 @@ services:
       start_period: 10s
 
 networks:
-  zero-guard-net:
+  zeroguard-net:
     driver: bridge
 
 volumes:
