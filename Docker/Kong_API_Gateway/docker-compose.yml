@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  kong:
+    image: kong:latest
+    container_name: kong
+    restart: unless-stopped
+    networks:
+      - zeroguard-net
+    environment:
+      KONG_DATABASE: "off"  # DB-less mode
+      KONG_DECLARATIVE_CONFIG: "/etc/kong/kong.yml"
+      KONG_PROXY_ACCESS_LOG: "/dev/stdout"
+      KONG_ADMIN_ACCESS_LOG: "/dev/stdout"
+      KONG_PROXY_ERROR_LOG: "/dev/stderr"
+      KONG_ADMIN_ERROR_LOG: "/dev/stderr"
+      KONG_ADMIN_LISTEN: "0.0.0.0:8001"
+      KONG_PROXY_LISTEN: "0.0.0.0:8000, 0.0.0.0:8443 ssl"
+    volumes:
+      - ./Kong_API_Gateway/kong.yml:/etc/kong/kong.yml  # Config File
+      - kong_data:/usr/local/kong  # Persist Kong runtime data
+    ports:
+      - "8000:8000"
+      - "8443:8443"
+      - "8001:8001"
+    healthcheck:
+      test: ["CMD", "kong", "health"]
+      interval: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  zeroguard-net:
+    driver: bridge
+
+volumes:
+  kong_data:
