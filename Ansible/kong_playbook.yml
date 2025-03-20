@@ -13,7 +13,7 @@
         mode: '0755'
 
     - name: Run Docker Compose to deploy/update Kong
-      command: docker-compose -f {{ deploy_dir }}/{{ compose_file }} up -d
+      command: docker-compose {{ compose_file }} up -d
       args:
         chdir: "{{ deploy_dir }}"
       register: compose_output
