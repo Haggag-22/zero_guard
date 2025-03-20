@@ -1,5 +1,6 @@
 - name: Deploy Kong on PEP Host
   hosts: pep
+  become: yes
   vars:
     deploy_dir: "/opt/zero_guard/kong"
     compose_file: "docker-compose.yml"
