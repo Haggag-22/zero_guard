@@ -20,4 +20,4 @@ jobs:
       - name: Run Ansible Playbook to Deploy Kong
         working-directory: Ansible
         run: |
-          ansible-playbook -i ${INVENTORY} ${PLAYBOOK}
+          ansible-playbook -i ${INVENTORY} ${PLAYBOOK} 
