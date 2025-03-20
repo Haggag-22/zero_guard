@@ -1,4 +1,4 @@
-name: Deploy Kong to PEP Machine
+name: Deploy Kong via Control Node
 
 on:
   push:
@@ -7,34 +7,17 @@ on:
 
 jobs:
   deploy-kong:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, control-node]
+    
     env:
-      TARGET_DIR: '/opt/zero_guard/kong'
-      INVENTORY: 'Ansible/inventory.yml'
-      PLAYBOOK: 'Ansible/kong_playbook.yml'
-      SSH_USER: pep
-      PEP_HOST: 192.168.1.10
+      INVENTORY: '/Ansible/inventory.yaml'
+      PLAYBOOK: '/Ansible/kong_playbook.yml'
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up SSH key for Kong
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY_KONG }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          echo "Host *" >> ~/.ssh/config
-          echo "    StrictHostKeyChecking no" >> ~/.ssh/config
-
-      - name: Sync Code to Target
-        run: |
-          rsync -avz --delete . $SSH_USER@$PEP_HOST:${TARGET_DIR}/
-        env:
-          RSYNC_RSH: 'ssh -o StrictHostKeyChecking=no'
-
-      - name: Deploy Kong with Ansible
+      - name: Run Ansible Playbook to Deploy Kong
+        working-directory: Ansible
         run: |
           ansible-playbook -i ${INVENTORY} ${PLAYBOOK}
-        env:
-          ANSIBLE_HOST_KEY_CHECKING: 'false'
