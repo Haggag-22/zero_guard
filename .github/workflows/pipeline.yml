@@ -12,8 +12,8 @@ jobs:
       TARGET_DIR: '/opt/zero_guard/kong'
       INVENTORY: 'Ansible/inventory.yml'
       PLAYBOOK: 'Ansible/kong_playbook.yml'
-      SSH_USER: ${{ secrets.SSH_USER_KONG }}
-      PEP_HOST: ${{ secrets.PEP_HOST_KONG }}
+      SSH_USER: pep
+      PEP_HOST: 192.168.1.10
 
     steps:
       - name: Checkout Code
