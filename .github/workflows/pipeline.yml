@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy-kong:
-    runs-on: [self-hosted, controlnode]
+    runs-on: self-hosted
     
     env:
       INVENTORY: '/Ansible/inventory.yaml'
