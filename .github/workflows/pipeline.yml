@@ -10,7 +10,7 @@ jobs:
     runs-on: self-hosted
     
     env:
-      INVENTORY: '/Ansible/inventory.yaml'
+      INVENTORY: '/Ansible/inventory.yml'
       PLAYBOOK: '/Ansible/kong_playbook.yml'
 
     steps:
