@@ -2,6 +2,12 @@
 - name: Manage Docker Compose deployment
   hosts: pep
   become: yes  # Run tasks with elevated privileges
+
+  vars:
+    local_compose_path: /home/control_node/Desktop/zero_guard/Docker/Kong_API_Gateway
+    remote_compose_path: /home/ansible/kong
+
+
   tasks:
     - name: Check if Docker is already installed
       command: which docker
@@ -22,9 +28,18 @@
     #   args:
     #     executable: /bin/bash
 
+  
+    - name: Copy Kong API Gateway files to remote VM
+      copy:
+        src: "{{ local_compose_path }}/"
+        dest: "{{ remote_compose_path }}/"
+        owner: pep
+        group: pep
+        mode: 0755
+
     - name: Run Docker Compose stack
       community.docker.docker_compose:
-        project_src: /home/control_node/Desktop/zero_guard/Docker/Kong_API_Gateway
+        project_src: "{{ remote_compose_path }}"
         files:
           - docker-compose.yml
           
