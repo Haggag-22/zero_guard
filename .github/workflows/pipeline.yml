@@ -12,6 +12,7 @@ jobs:
     env:
       INVENTORY: 'inventory.yml'
       PLAYBOOK: 'kong_playbook.yml'
+      SUDO_PASS: ${{ secrets.PEP_SUDO_PASS }}
 
     steps:
       - name: Checkout Code
@@ -20,4 +21,4 @@ jobs:
       - name: Run Ansible Playbook to Deploy Kong
         working-directory: Ansible
         run: |
-          ansible-playbook -i ${INVENTORY} ${PLAYBOOK} 
+          ansible-playbook -i ${INVENTORY} ${PLAYBOOK} --extra-vars "ansible_become_pass=${PEP_SUDO_PASS}"
