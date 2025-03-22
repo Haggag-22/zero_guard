@@ -25,8 +25,8 @@
       copy:
         src: "{{ local_compose_path }}/"
         dest: "{{ remote_compose_path }}/"
-        owner: pdp
-        group: pdp
+        owner: pep
+        group: pep
         mode: 0755
 
     - name: Run Docker Compose stack
