@@ -1,4 +1,4 @@
-name: Deploy Kong from Control Node
+name: Deploy Kong from Ansible Control Node
 
 on:
   push:
