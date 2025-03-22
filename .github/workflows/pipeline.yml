@@ -22,3 +22,5 @@ jobs:
         working-directory: Ansible
         run: |
           ansible-playbook -i ${INVENTORY} ${PLAYBOOK} --extra-vars "ansible_become_pass=${PEP_SUDO_PASS}"
+        env:
+          PEP_SUDO_PASS: ${{ secrets.PEP_SUDO_PASS }}
