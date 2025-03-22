@@ -3,11 +3,17 @@
   hosts: pep
   become: yes  # Run tasks with elevated privileges
   tasks:
-    - name: Install Docker
+    - name: Check if Docker is already installed
+      command: which docker
+      register: docker_check
+      ignore_errors: true
+
+    - name: Install Docker if not present
       apt:
         name: docker.io
         state: present
         update_cache: yes
+      when: docker_check.rc != 0
 
     # - name: Install Docker Compose
     #   shell: |
