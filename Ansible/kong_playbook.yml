@@ -1,8 +1,24 @@
-- name: Minimal Docker Compose Playbook
-  hosts: pep
-  become: yes
-
+---
+- name: Manage Docker Compose deployment
+  hosts: all
+  become: yes  # Run tasks with elevated privileges
   tasks:
-    - name: Run Docker Compose
-      command: docker-compose -f /home/pep/Desktop/zero_guard/Docker/Kong_API_Gateway/docker-compose.yml up -d
-      
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    # - name: Install Docker Compose
+    #   shell: |
+    #     curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    #     chmod +x /usr/local/bin/docker-compose
+    #   args:
+    #     executable: /bin/bash
+
+    - name: Run Docker Compose stack
+      community.docker.docker_compose:
+        project_src: /home/control_node/Desktop/zero_guard/Docker/Kong_API_Gateway
+        files:
+          - docker-compose.yml
+          
