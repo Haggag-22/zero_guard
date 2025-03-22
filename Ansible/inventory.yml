@@ -5,7 +5,7 @@ all:
       ansible_user: pep
       ansible_ssh_private_key_file: ~/.ssh/id_rsa
     pdp:
-      ansible_host: pdp.zerotrust.local
+      ansible_host: 192.168.1.11
       ansible_user: pdp
       ansible_ssh_private_key_file: ~/.ssh/id_rsa
       ansible_python_interpreter: /usr/bin/python3
