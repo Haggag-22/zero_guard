@@ -1,7 +1,7 @@
 ---
 - name: Manage Docker Compose deployment
   hosts: pep
-  become: yes  # Run tasks with elevated privileges
+  become: yes
 
   vars:
     local_compose_path: /home/control_node/Desktop/zero_guard/Docker/Kong_API_Gateway
