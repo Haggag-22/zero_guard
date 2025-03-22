@@ -1,0 +1,37 @@
+---
+- name: Manage Docker Compose deployment
+  hosts: pdp
+  become: yes
+
+  vars:
+    local_compose_path: /home/control_node/Desktop/zero_guard/Docker/Keycloak
+    remote_compose_path: /home/zeroguard/ansible/keycloak
+
+
+  tasks:
+    - name: Check if Docker is already installed
+      command: which docker
+      register: docker_check
+      ignore_errors: true
+
+    - name: Install Docker if not present
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+      when: docker_check.rc != 0
+
+    - name: Copy Keycloak files to remote VM
+      copy:
+        src: "{{ local_compose_path }}/"
+        dest: "{{ remote_compose_path }}/"
+        owner: pdp
+        group: pdp
+        mode: 0755
+
+    - name: Run Docker Compose stack
+      community.docker.docker_compose:
+        project_src: "{{ remote_compose_path }}"
+        files:
+          - docker-compose.yml
+          
