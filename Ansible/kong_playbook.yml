@@ -5,7 +5,7 @@
 
   vars:
     local_compose_path: /home/control_node/Desktop/zero_guard/Docker/Kong_API_Gateway
-    remote_compose_path: /home/ansible/kong
+    remote_compose_path: /home/zeroguard/ansible/kong
 
 
   tasks:
