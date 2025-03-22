@@ -1,6 +1,6 @@
 ---
 - name: Manage Docker Compose deployment
-  hosts: all
+  hosts: pep
   become: yes  # Run tasks with elevated privileges
   tasks:
     - name: Install Docker
