@@ -28,7 +28,7 @@
         state: directory
         mode: '0755'
 
-    - name: Overwrite Docker Compose and Kong config on PDP VM
+    - name: Overwrite Docker Compose and Kong config on PEP VM
       copy:
         src: "{{ local_compose_path }}/"
         dest: "{{ remote_compose_path }}/"
@@ -36,7 +36,7 @@
         directory_mode: '0755'
         force: yes
         remote_src: no
-        
+
     - name: Stop and remove all containers before deploying
       command: docker-compose down --remove-orphans
       args:
