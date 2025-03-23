@@ -21,13 +21,12 @@
         update_cache: yes
       when: docker_check.rc != 0
 
-    - name: Copy Keycloak files to remote VM
+    - name: Copy Keycloak files to remote PDP VM
       copy:
-        src: "{{ local_compose_path }}/"
-        dest: "{{ remote_compose_path }}/"
-        owner: pdp
-        group: pdp
-        mode: 0755
+        src: ../Docker/Keycloak/
+        dest: /opt/keycloak
+        mode: '0644'
+        directory_mode: '0755'
 
     - name: Run Docker Compose
       community.docker.docker_compose:
