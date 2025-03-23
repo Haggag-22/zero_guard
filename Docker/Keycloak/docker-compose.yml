@@ -21,6 +21,13 @@ services:
     networks:
       - keycloak-network
     command: start
+    healthcheck:
+      test: ["CMD", "curl", "--silent", "--fail", "http://localhost:8080"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 10s
+
   postgres:
     image: postgres:latest
     environment:
@@ -33,6 +40,12 @@ services:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - keycloak-network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "keycloak"]
+      interval: 30s
+      retries: 5
+      start_period: 10s
+      timeout: 10s
 
 volumes:
   postgres-data:
