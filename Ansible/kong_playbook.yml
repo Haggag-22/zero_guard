@@ -14,6 +14,13 @@
       register: docker_check
       ignore_errors: true
 
+    - name: Install Docker if not present
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+      when: docker_check.rc != 0
+
     - name: Ensure target directory exists on PEP VM
       file:
         path: /opt/kong

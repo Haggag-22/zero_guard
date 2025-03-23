@@ -21,13 +21,19 @@
         update_cache: yes
       when: docker_check.rc != 0
 
+
+    - name: Ensure target directory exists on PEP VM
+      file:
+        path: /opt/keycloak
+        state: directory
+        mode: '0755'
+
     - name: Copy Keycloak files to remote PDP VM
       copy:
-        src: "{{ local_compose_path }}/"
-        dest: "{{ remote_compose_path }}/"
-        owner: pdp
-        group: pdp
-        mode: 0755
+        src: ../Docker/Keycloak
+        dest: /opt/keycloak
+        mode: '0644'
+        directory_mode: '0755'
         force: yes
 
     - name: Run Docker Compose
@@ -35,6 +41,4 @@
         project_src: "{{ remote_compose_path }}"
         files:
           - docker-compose.yml
-        state: present
-        remove_orphans: true
           
