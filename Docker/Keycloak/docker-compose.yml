@@ -29,28 +29,28 @@ services:
   # - Accessible on port 8080
   # - Connected to PostgreSQL via keycloak-network
   # - Configured for development mode with HTTP enabled
-  keycloak:
-    image: quay.io/keycloak/keycloak:latest
-    container_name: keycloak
-    environment:
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
-      KC_DB_USERNAME: keycloak
-      KC_DB_PASSWORD: keycloak_password
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin_password
-      KC_HOSTNAME_STRICT: false
-      KC_HOSTNAME_STRICT_HTTPS: false
-      KC_HTTP_ENABLED: true
-    command:
-      - start-dev
-    ports:
-      - "8080:8080"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - keycloak-network
+  # keycloak:
+  #   image: quay.io/keycloak/keycloak:latest
+  #   container_name: keycloak
+  #   environment:
+  #     KC_DB: postgres
+  #     KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+  #     KC_DB_USERNAME: keycloak
+  #     KC_DB_PASSWORD: keycloak_password
+  #     KEYCLOAK_ADMIN: admin
+  #     KEYCLOAK_ADMIN_PASSWORD: admin_password
+  #     KC_HOSTNAME_STRICT: false
+  #     KC_HOSTNAME_STRICT_HTTPS: false
+  #     KC_HTTP_ENABLED: true
+  #   command:
+  #     - start-dev
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   networks:
+  #     - keycloak-network
 
 volumes:
   postgres_data:
