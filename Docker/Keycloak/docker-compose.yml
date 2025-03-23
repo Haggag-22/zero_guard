@@ -8,7 +8,6 @@ services:
       KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
       KC_DB_USERNAME: admin
       KC_DB_PASSWORD: admin
-      KC_HOSTNAME: pdp.zerotrust.local
       KC_HEALTH_ENABLED: "true"
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
