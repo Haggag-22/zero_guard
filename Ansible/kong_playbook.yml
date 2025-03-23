@@ -5,8 +5,7 @@
 
   vars:
     local_compose_path: /home/control_node/Desktop/zero_guard/Docker/Kong_API_Gateway
-    remote_compose_path: /home/zeroguard/ansible/kong
-
+    remote_compose_path: /opt/kong  
 
   tasks:
     - name: Check if Docker is already installed
@@ -23,14 +22,14 @@
 
     - name: Ensure target directory exists on PEP VM
       file:
-        path: /opt/kong
+        path: "{{ remote_compose_path }}"
         state: directory
         mode: '0755'
 
-    - name: Copy Docker Compose and Kong config to PEP VM
+    - name: Overwrite Docker Compose and Kong config on PEP VM
       copy:
-        src: ../Docker/Kong_API_Gateway/
-        dest: /opt/kong/
+        src: "{{ local_compose_path }}/"
+        dest: "{{ remote_compose_path }}/"
         mode: '0644'
         directory_mode: '0755'
         force: yes
@@ -40,4 +39,3 @@
         project_src: "{{ remote_compose_path }}"
         files:
           - docker-compose.yml
-          
