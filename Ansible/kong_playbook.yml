@@ -14,20 +14,18 @@
       register: docker_check
       ignore_errors: true
 
-    - name: Install Docker if not present
-      apt:
-        name: docker.io
-        state: present
-        update_cache: yes
-      when: docker_check.rc != 0
+    - name: Ensure target directory exists on PEP VM
+      file:
+        path: /opt/kong
+        state: directory
+        mode: '0755'
 
-    - name: Copy Kong API Gateway files to remote VM
+    - name: Copy Docker Compose and Kong config to PEP VM
       copy:
-        src: "{{ local_compose_path }}/"
-        dest: "{{ remote_compose_path }}/"
-        owner: pep
-        group: pep
-        mode: 0755
+        src: ../Docker/Kong_API_Gateway/
+        dest: /opt/kong/
+        mode: '0644'
+        directory_mode: '0755'
 
     - name: Run Docker Compose stack
       community.docker.docker_compose:
