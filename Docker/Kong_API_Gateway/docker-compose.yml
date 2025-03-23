@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   kong:
-    image: kong:latest
+    image: kong:3.4
     container_name: kong
     restart: unless-stopped
     networks:
