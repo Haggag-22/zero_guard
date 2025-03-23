@@ -28,6 +28,7 @@
         owner: pdp
         group: pdp
         mode: 0755
+        force: yes
 
     - name: Run Docker Compose
       community.docker.docker_compose:

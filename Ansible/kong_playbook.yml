@@ -26,6 +26,7 @@
         dest: /opt/kong/
         mode: '0644'
         directory_mode: '0755'
+        force: yes
 
     - name: Run Docker Compose
       community.docker.docker_compose:
