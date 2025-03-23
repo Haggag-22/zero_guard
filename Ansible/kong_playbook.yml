@@ -1,6 +1,6 @@
 ---
 - name: Manage Docker Compose deployment
-  hosts: pdp
+  hosts: pep
   become: yes
 
   vars:
