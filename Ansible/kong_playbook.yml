@@ -31,4 +31,6 @@
       ansible.builtin.shell: docker compose up -d
       args:
         chdir: /opt/kong
+      register: kong_output
+      failed_when: kong_output.rc != 0 and '"Error"' in kong_output.stderr
           
