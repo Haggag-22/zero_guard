@@ -30,8 +30,9 @@
         mode: 0755
 
     - name: Run Docker Compose stack
-      community.docker.docker_compose:
-        project_src: "{{ remote_compose_path }}"
-        files:
-          - docker-compose.yml
+      ansible.builtin.shell: docker compose up -d --remove-orphans
+      args:
+        chdir: /opt/keycloak  # or wherever you copy the Docker files
+      register: keycloak_output
+      failed_when: keycloak_output.rc != 0 and '"Error"' in keycloak_output.stderr
           
