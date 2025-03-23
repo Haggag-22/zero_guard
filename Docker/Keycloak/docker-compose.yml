@@ -26,7 +26,6 @@ services:
 
   postgres:
     image: postgres:15
-    container_name: keycloak-db
     restart: always
     environment:
       POSTGRES_DB: keycloak
@@ -36,6 +35,10 @@ services:
       - keycloak_db_data:/var/lib/postgresql/data
     networks:
       - zeroguard-net
+
+    
+      
+
 
 volumes:
   keycloak_db_data:
