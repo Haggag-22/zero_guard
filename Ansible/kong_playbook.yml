@@ -35,6 +35,11 @@
         force: yes
         remote_src: no
 
+    - name: Stop and remove all containers before deploying
+      command: docker-compose down --remove-orphans
+      args:
+        chdir: "{{ remote_compose_path }}"
+
     - name: Run Docker Compose
       community.docker.docker_compose:
         project_src: "{{ remote_compose_path }}"
