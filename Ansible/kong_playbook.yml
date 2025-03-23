@@ -28,9 +28,10 @@
         directory_mode: '0755'
 
     - name: Run Docker Compose to deploy Kong
-      ansible.builtin.shell: docker compose up -d
+      shell: docker compose up -d
       args:
         chdir: /opt/kong
       register: kong_output
       failed_when: kong_output.rc != 0 and '"Error"' in kong_output.stderr
+
           
