@@ -34,6 +34,6 @@
         project_src: "{{ remote_compose_path }}"
         files:
           - docker-compose.yml
-        state: absent
+        state: present
         remove_orphans: true
           
