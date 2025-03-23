@@ -27,11 +27,9 @@
         mode: '0644'
         directory_mode: '0755'
 
-    - name: Run Docker Compose to deploy Kong
-      shell: docker compose up -d
-      args:
-        chdir: /opt/kong
-      register: kong_output
-      failed_when: kong_output.rc != 0 and '"Error"' in kong_output.stderr
-
+    - name: Run Docker Compose stack
+      community.docker.docker_compose:
+        project_src: "{{ remote_compose_path }}"
+        files:
+          - docker-compose.yml
           
