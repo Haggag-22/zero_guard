@@ -27,9 +27,8 @@
         mode: '0644'
         directory_mode: '0755'
 
-    - name: Run Docker Compose stack
-      community.docker.docker_compose:
-        project_src: "{{ remote_compose_path }}"
-        files:
-          - docker-compose.yml
+    - name: Run Docker Compose to deploy Kong
+      ansible.builtin.shell: docker compose up -d
+      args:
+        chdir: /opt/kong
           
