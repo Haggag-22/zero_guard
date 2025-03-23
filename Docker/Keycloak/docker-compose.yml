@@ -1,21 +1,45 @@
 services:
-  postgresql:
-    image: docker.io/bitnami/postgresql:latest
-    environment:
-      # ALLOW_EMPTY_PASSWORD is recommended only for development.
-      - ALLOW_EMPTY_PASSWORD=yes
-      - POSTGRESQL_USERNAME=bn_keycloak
-      - POSTGRESQL_DATABASE=bitnami_keycloak
-    volumes:
-      - 'postgresql_data:/bitnami/postgresql'
-
   keycloak:
-    image: docker.io/bitnami/keycloak:26
-    depends_on:
-      - postgresql
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    command: start
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: admin
+      KC_HOSTNAME: keycloak.zerotrust.local
+      KC_HEALTH_ENABLED: "true"
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
-      - "80:8080"
+      - "7080:8080"     
+      - "7443:8443"     
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]
+      interval: 15s
+      timeout: 2s
+    depends_on:
+      - postgres
+    networks:
+      - zeroguard-net
+
+  postgres:
+    image: postgres:15
+    container_name: keycloak-db
+    restart: always
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - keycloak_db_data:/var/lib/postgresql/data
+    networks:
+      - zeroguard-net
 
 volumes:
-  postgresql_data:
-    driver: local
+  keycloak_db_data:
+
+networks:
+  zeroguard-net:
+    driver: bridge
