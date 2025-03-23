@@ -1,41 +1,41 @@
+version: "3.8"
+
 services:
   keycloak:
     image: quay.io/keycloak/keycloak:latest
-    restart: always
-    container_name: keycloak
-    command: start-dev
     environment:
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
-      KC_DB_USERNAME: admin
-      KC_DB_PASSWORD: admin
+      KC_HOSTNAME: "localhost"
+      KC_HOSTNAME_PORT: "8080"
+      KEYCLOAK_ADMIN: "admin"
+      KEYCLOAK_ADMIN_PASSWORD: "admin"
+      KC_DB: "postgres"
+      KC_DB_URL: "jdbc:postgresql://postgres:5432/keycloak"
+      KC_DB_USERNAME: "admin"
+      KC_DB_PASSWORD: "admin"
       KC_HEALTH_ENABLED: "true"
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_LOG_LEVEL: "info"
     ports:
-      - "7080:8080"     
-      - "7443:8443"     
+      - "8080:8080"
     depends_on:
       - postgres
     networks:
-      - zeroguard-net
-
-
+      - keycloak-network
+    command: start
   postgres:
-    image: postgres:15
-    restart: always
+    image: postgres:latest
     environment:
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: "keycloak"
+      POSTGRES_USER: "keycloak"
+      POSTGRES_PASSWORD: "password"
+    ports:
+      - "5432:5432"
     volumes:
-      - keycloak_db_data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     networks:
-      - zeroguard-net
+      - keycloak-network
 
 volumes:
-  keycloak_db_data:
+  postgres-data:
 
 networks:
-  zeroguard-net:
-    driver: bridge
+  keycloak-network:
