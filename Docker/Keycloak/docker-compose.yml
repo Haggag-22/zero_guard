@@ -14,14 +14,11 @@ services:
     ports:
       - "7080:8080"     
       - "7443:8443"     
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]
-      interval: 15s
-      timeout: 2s
     depends_on:
       - postgres
     networks:
       - zeroguard-net
+
 
   postgres:
     image: postgres:15
