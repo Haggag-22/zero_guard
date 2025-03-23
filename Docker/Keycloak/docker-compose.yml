@@ -2,7 +2,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
-    command: start
+    command: start-dev
     environment:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
@@ -34,10 +34,6 @@ services:
       - keycloak_db_data:/var/lib/postgresql/data
     networks:
       - zeroguard-net
-
-    
-      
-
 
 volumes:
   keycloak_db_data:
