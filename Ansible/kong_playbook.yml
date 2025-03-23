@@ -1,5 +1,5 @@
 ---
-- name: Manage Docker Compose deployment
+- name: Manage Docker Compose 
   hosts: pep
   become: yes
 
