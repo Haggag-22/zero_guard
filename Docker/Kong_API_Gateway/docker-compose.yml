@@ -4,7 +4,7 @@ services:
   kong:
     image: kong:3.4
     container_name: kong
-    restart: unless-stopped
+    restart: always
     networks:
       - zeroguard-net
     environment:
