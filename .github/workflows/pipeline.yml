@@ -20,6 +20,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+      
+      - name: Pull Latest Code in Working Directory
+        run: |
+          git pull origin main  
 
       - name: Run Ansible Playbook to Deploy Kong
         working-directory: Ansible
