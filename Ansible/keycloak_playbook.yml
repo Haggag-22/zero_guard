@@ -29,10 +29,9 @@
         group: pdp
         mode: 0755
 
-    - name: Run Docker Compose stack
-      ansible.builtin.shell: docker compose up -d 
-      args:
-        chdir: /opt/keycloak  
-      register: keycloak_output
-      failed_when: keycloak_output.rc != 0 and '"Error"' in keycloak_output.stderr
+    - name: Run Docker Compose
+      community.docker.docker_compose:
+        project_src: "{{ remote_compose_path }}"
+        files:
+          - docker-compose.yml
           
