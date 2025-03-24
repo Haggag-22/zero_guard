@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  opa:
+    image: openpolicyagent/opa:latest
+    container_name: opa
+    restart: unless-stopped
+    ports:
+      - "8181:8181"
+    command:
+      - "run"
+      - "--server"
+      - "--addr=0.0.0.0:8181"
+      - "--log-level=debug"
+      - "--set=decision_logs.console=true"
+      - "/policies"
+    volumes:
+      - ../opa/policies:/policies:ro
+    networks:
+      - pdp_net
+
+networks:
+  pdp_net:
+    driver: bridge
