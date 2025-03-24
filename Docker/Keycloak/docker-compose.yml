@@ -4,9 +4,36 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:26.1.4
     environment:
+      - KC_DB=postgres
+      - KC_DB_URL_HOST=postgres
+      - KC_DB_URL_DATABASE=keycloak
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_PASSWORD=keycloak_pass
       - KC_BOOTSTRAP_ADMIN_USERNAME=admin
       - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
     ports:
-      - "8080:8080"  # Expose Keycloak on port 8080
-    command: start-dev  # Run Keycloak in development mode
-    restart: unless-stopped  # Automatically restart the container unless manually stopped
+      - "8080:8080"  # Keycloak web interface
+    command: start-dev
+    depends_on:
+      - postgres
+    networks:
+      - keycloak-net
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=keycloak_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - keycloak-net
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  keycloak-net:
