@@ -36,7 +36,17 @@
         dest: "{{ kong_config_path }}"
         mode: '0644'
 
-    - name: Run Docker Compose to deploy Kong API Gateway
-      command:
-        cmd: docker-compose up -d  # Run docker-compose on the target machine
+    - name: Stop and remove existing containers (remove orphans)
+      command: docker-compose down --remove-orphans
+      args:
+        chdir: "{{ docker_compose_path | dirname }}"
+      ignore_errors: true
+
+    - name: Prune unused Docker resources (but keep named volumes)
+      shell: docker system prune -f
+      ignore_errors: true
+
+    - name: Run Docker Compose to deploy Kong
+      command: docker-compose up -d --remove-orphans
+      args:
         chdir: "{{ docker_compose_path | dirname }}"
