@@ -1,42 +1,49 @@
----
 - name: Deploy Kong API Gateway using Docker Compose
-  hosts: pep  
-  become: yes  
+  hosts: pep  # Target machine
+  become: yes
 
   vars:
     github_docker_compose_url: "https://raw.githubusercontent.com/Haggag-22/zero_guard/main/Docker/Kong_API_Gateway/docker-compose.yml"
+    github_kong_config_url: "https://raw.githubusercontent.com/Haggag-22/zero_guard/main/Docker/Kong_API_Gateway/kong.yml"  # URL to kong.yml on GitHub
     docker_compose_version: "1.29.2"
-    docker_compose_path: "/home/pep/docker-compose.yml"  # Path where the file will be saved on the target machine
+    docker_compose_path: "/home/pep/docker-compose.yml"  # Path where the docker-compose file will be saved on the target machine
+    kong_config_path: "/home/pep/kong.yml"  # Path where the kong.yml file will be copied on the target machine
 
   tasks:
     - name: Check if Docker is already installed on the target machine
       command: which docker
       register: docker_check
-      ignore_errors: true  
+      ignore_errors: true
 
     - name: Install Docker on the target machine if not present
       apt:
         name: docker.io
         state: present
         update_cache: yes
-      when: docker_check.rc != 0  
+      when: docker_check.rc != 0
 
     - name: Check if Docker Compose is installed on the target machine
       command: which docker-compose
       register: docker_compose_check
-      ignore_errors: true  
+      ignore_errors: true
 
     - name: Install Docker Compose on the target machine if not present
       shell: |
         curl -L "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         chmod +x /usr/local/bin/docker-compose
-      when: docker_compose_check.rc != 0  
+      when: docker_compose_check.rc != 0
 
     - name: Download Docker Compose file from GitHub to the target machine
       get_url:
         url: "{{ github_docker_compose_url }}"
-        dest: "{{ docker_compose_path }}"  # Path on the target machine where the Docker Compose file will be saved
-        mode: '0644'  
+        dest: "{{ docker_compose_path }}"
+        mode: '0644'
+
+    - name: Download Confif File from GitHub to the target machine
+      get_url:
+        url: "{{ github_kong_config_url }}"  # URL to download the kong.yml file
+        dest: "{{ kong_config_path }}"  # Path on the target machine where kong.yml will be saved
+        mode: '0644'
 
     - name: Stop and remove existing Kong container if it exists
       docker_container:
