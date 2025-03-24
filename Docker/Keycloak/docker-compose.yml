@@ -1,29 +1,38 @@
-version: '3.8'
+version: '3.7'
+
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:latest
+    image: jboss/keycloak:latest
     environment:
-      KC_HOSTNAME: localhost
-      KC_HOSTNAME_PORT: 8080
-      KC_HOSTNAME_STRICT_BACKCHANNEL: "true"
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: password
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
-      KC_DB_USERNAME: keycloak
-      KC_DB_PASSWORD: keycloak
-      KC_HEALTH_ENABLED: "true"
-      KC_LOG_LEVEL: info
+      - KEYCLOAK_USER=admin  # Replace with your Keycloak admin username
+      - KEYCLOAK_PASSWORD=admin  # Replace with your Keycloak admin password
+      - DB_VENDOR=postgres
+      - DB_ADDR=keycloak-postgres
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloak
+      - DB_PASSWORD=keycloak_password
     ports:
-      - "8080:8080"
+      - "8080:8080"  # Expose port 8080 for accessing Keycloak
     depends_on:
-      - postgres
-    command: start
-  postgres:
-    image: postgres:latest
+      - keycloak-postgres
+    networks:
+      - keycloak-network
+
+  keycloak-postgres:
+    image: postgres:alpine
     environment:
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: keycloak
-    ports:
-      - "5432:5432"
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=keycloak_password
+      - POSTGRES_DB=keycloak
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - keycloak-network
+
+networks:
+  keycloak-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
