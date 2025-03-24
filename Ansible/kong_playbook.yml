@@ -1,4 +1,4 @@
-- name: Deploy Docker Compose Application
+- name: Deploy Docker Compose Applicatio
   hosts: pep
   become: true
 
