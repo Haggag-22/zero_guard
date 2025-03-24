@@ -1,47 +1,51 @@
 ---
-- name: Manage Docker Compose 
-  hosts: pep
-  become: yes
+- name: Deploy Kong API Gateway using Docker Compose
+  hosts: pep  
+  become: yes  
 
   vars:
-    local_compose_path: /home/control_node/Desktop/zero_guard/Docker/Kong_API_Gateway
-    remote_compose_path: /opt/kong  
+    github_docker_compose_url: "https://raw.githubusercontent.com/Haggag-22/zero_guard/main/Docker/Kong_API_Gateway/docker-compose.yml"
+    docker_compose_version: "1.29.2"
+    docker_compose_path: "/home/pep/docker-compose.yml"  # Path where the file will be saved on the target machine
 
   tasks:
-    - name: Check if Docker is already installed
+    - name: Check if Docker is already installed on the target machine
       command: which docker
       register: docker_check
-      ignore_errors: true
+      ignore_errors: true  
 
-    - name: Install Docker if not present
+    - name: Install Docker on the target machine if not present
       apt:
         name: docker.io
         state: present
         update_cache: yes
-      when: docker_check.rc != 0
+      when: docker_check.rc != 0  
 
-    - name: Ensure target directory exists on PEP VM
-      file:
-        path: "{{ remote_compose_path }}"
-        state: directory
-        mode: '0755'
+    - name: Check if Docker Compose is installed on the target machine
+      command: which docker-compose
+      register: docker_compose_check
+      ignore_errors: true  
 
-    - name: Overwrite Docker Compose and Kong config on PEP VM
-      copy:
-        src: "{{ local_compose_path }}/"
-        dest: "{{ remote_compose_path }}/"
-        mode: '0644'
-        directory_mode: '0755'
-        force: yes
-        remote_src: no
+    - name: Install Docker Compose on the target machine if not present
+      shell: |
+        curl -L "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        chmod +x /usr/local/bin/docker-compose
+      when: docker_compose_check.rc != 0  
 
-    - name: Stop and remove all containers before deploying
+    - name: Download Docker Compose file from GitHub to the target machine
+      get_url:
+        url: "{{ github_docker_compose_url }}"
+        dest: "{{ docker_compose_path }}"  # Path on the target machine where the Docker Compose file will be saved
+        mode: '0644'  
+
+    - name: Stop and remove all containers before deploying on the target machine
       command: docker-compose down --remove-orphans
       args:
-        chdir: "{{ remote_compose_path }}"
+        chdir: "{{ docker_compose_path | dirname }}"  # Navigate to the directory where the Docker Compose file is saved
+      ignore_errors: true  # Ignore errors if there are no running containers
 
-    - name: Run Docker Compose
+    - name: Run Docker Compose to deploy Kong API Gateway on the target machine
       community.docker.docker_compose:
-        project_src: "{{ remote_compose_path }}"
+        project_src: "{{ docker_compose_path | dirname }}"  # Set the directory path for Docker Compose to run
         files:
-          - docker-compose.yml
+          - "{{ docker_compose_path }}"  # The Docker Compose file on the target machine

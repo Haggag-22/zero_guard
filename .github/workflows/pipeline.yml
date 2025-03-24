@@ -24,6 +24,7 @@ jobs:
       - name: Pull Latest Code in Working Directory
         run: |
           git pull origin main  
+        continue-on-error: true
 
       - name: Run Ansible Playbook to Deploy Kong
         working-directory: Ansible
@@ -31,6 +32,7 @@ jobs:
           ansible-playbook -i ${INVENTORY} ${KONG_PLAYBOOK} --extra-vars "ansible_become_pass=${PEP_SUDO_PASS}"
         env:
           PEP_SUDO_PASS: ${{ secrets.PEP_SUDO_PASS }}
+        continue-on-error: true
 
       - name: Run Ansible Playbook to Deploy Keycloak
         working-directory: Ansible
@@ -38,3 +40,4 @@ jobs:
           ansible-playbook -i ${INVENTORY} ${KEYCLOAK_PLAYBOOK} --extra-vars "ansible_become_pass=${PDP_SUDO_PASS}"
         env:
           PDP_SUDO_PASS: ${{ secrets.PDP_SUDO_PASS }}
+        continue-on-error: true

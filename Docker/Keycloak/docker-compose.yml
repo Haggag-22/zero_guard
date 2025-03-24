@@ -14,7 +14,7 @@ services:
       KC_DB_PASSWORD: "password"
       KC_HEALTH_ENABLED: "true"
       KC_LOG_LEVEL: "info"
-      KC_HOSTNAME_STRICT: "false"  # Set this as a string, not a boolean
+      KC_HOSTNAME_STRICT: "false"  
     ports:
       - "8080:8080"
     depends_on:
