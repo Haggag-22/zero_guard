@@ -13,6 +13,7 @@ jobs:
       INVENTORY: 'inventory.yml'
       KONG_PLAYBOOK: 'kong_playbook.yml'
       KEYCLOAK_PLAYBOOK: 'keycloak_playbook.yml'
+      OPA_PLAYBOOK: 'opa_playbook.yml'
       PEP_SUDO_PASS: ${{ secrets.PEP_SUDO_PASS }}
       PDP_SUDO_PASS: ${{ secrets.PDP_SUDO_PASS }}
 
@@ -42,3 +43,9 @@ jobs:
         env:
           PDP_SUDO_PASS: ${{ secrets.PDP_SUDO_PASS }}
         
+      - name: Run Ansible Playbook to Deploy OPA
+        working-directory: Ansible
+        run: |
+          ansible-playbook -i ${INVENTORY} ${OPA_PLAYBOOK} --extra-vars "ansible_become_pass=${PDP_SUDO_PASS}"
+        env:
+          PDP_SUDO_PASS: ${{ secrets.PDP_SUDO_PASS }}
