@@ -14,7 +14,7 @@
         name: docker.io
         state: present
 
-     name: Download Docker Compose file from GitHub to the target machine
+    - name: Download Docker Compose file from GitHub to the target machine
       get_url:
         url: "{{ github_docker_compose_url }}"
         dest: "{{ docker_compose_path }}"
