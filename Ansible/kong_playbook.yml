@@ -5,8 +5,8 @@
   vars:
     github_docker_compose_url: "https://raw.githubusercontent.com/Haggag-22/zero_guard/main/Docker/Kong_API_Gateway/docker-compose.yml"
     github_kong_config_url: "https://raw.githubusercontent.com/Haggag-22/zero_guard/main/Docker/Kong_API_Gateway/kong.yml"
-    docker_compose_path: "/home/pep/docker-compose.yml"  
-    kong_config_path: "/home/pep/kong.yml"  
+    docker_compose_path: "/home/pdp/docker-compose.yml"  
+    kong_config_path: "/home/pdp/kong.yml"  
 
   tasks:
     - name: Install Docker
