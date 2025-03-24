@@ -1,5 +1,5 @@
 ---
-- name: Manage Keycloak Docker Compos
+- name: Manage Keycloak Docker Compose
   hosts: pdp
   become: yes
 
