@@ -1,29 +1,21 @@
 #!/bin/bash
 
-# Update and install dependencies
-sudo apt update && sudo apt install -y ca-certificates curl gnupg
+apt-get install apt-transport-https ca-certificates curl gnupg2 software-properties-common sudo
 
-# Ensure /etc/apt/keyrings exists before adding the GPG key
-sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | sudo apt-key add -
 
-# Add Docker’s GPG key and repository
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo tee /etc/apt/keyrings/docker.asc > /dev/null
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") $(lsb_release -cs) stable"
 
-# Install Docker
-sudo apt update && sudo apt install -y docker-ce docker-ce-cli containerd.io
+apt-get update
 
-# Start and enable Docker
-sudo systemctl enable --now docker
+apt-get install docker-ce
 
-# Add the current user to the Docker group
-sudo usermod -aG docker $USER
+curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 
-# Apply group change without logout
-newgrp docker
+chmod +x /usr/local/bin/docker-compose
 
-# Verify installation
-echo "✅ Docker installed successfully!"
-docker --version
+docker-compose --version
 
 
+curl -fsSL https://get.docker.com/ -o get-docker.sh
+sh get-docker.sh
