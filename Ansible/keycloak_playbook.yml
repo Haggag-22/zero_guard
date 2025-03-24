@@ -21,15 +21,13 @@
       args:
         creates: /usr/local/bin/docker-compose
 
-
-
     - name: Download Docker Compose file from GitHub to the target machine
       get_url:
         url: "{{ github_docker_compose_url }}"
         dest: "{{ docker_compose_path }}"
         mode: '0644'
 
-    - name: Run Docker Compose to deploy Kong API Gateway on the target machine
+    - name: Run Docker Compose to deploy Keycloak
       command:
         cmd: docker-compose up -d  # Run docker-compose on the target machine
         chdir: "{{ docker_compose_path | dirname }}"

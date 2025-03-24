@@ -36,7 +36,7 @@
         dest: "{{ kong_config_path }}"
         mode: '0644'
 
-    - name: Run Docker Compose to deploy Kong API Gateway on the target machine
+    - name: Run Docker Compose to deploy Kong API Gateway
       command:
         cmd: docker-compose up -d  # Run docker-compose on the target machine
         chdir: "{{ docker_compose_path | dirname }}"
