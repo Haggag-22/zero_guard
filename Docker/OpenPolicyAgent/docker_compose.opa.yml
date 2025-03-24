@@ -15,10 +15,10 @@ services:
       - "--set=decision_logs.console=true"
       - "/policies"
     volumes:
-      - ../opa/policies:/policies:ro
+      - /home/pdp/zero_guard/OPA/policies:/policies:ro
     networks:
-      - pdp_net
+      - zeroguard-net
 
 networks:
-  pdp_net:
+  zeroguard-net:
     driver: bridge
