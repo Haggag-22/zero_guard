@@ -4,7 +4,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:26.1.4
     environment:
-      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admi
       - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
     ports:
       - "8080:8080"  # Expose Keycloak on port 8080
