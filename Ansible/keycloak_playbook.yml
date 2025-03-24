@@ -1,57 +1,35 @@
----
-- name: Manage Keycloak Docker Compose
+- name: Deploy Docker Compose Applicatio
   hosts: pdp
-  become: yes
+  become: true
 
   vars:
-    local_compose_path: /home/control_node/Desktop/zero_guard/Docker/Keycloak
-    remote_compose_path: /opt/keycloak
-
+    github_docker_compose_url: "https://raw.githubusercontent.com/Haggag-22/zero_guard/main/Docker/Keycloak/docker-compose.yml"
+    docker_compose_path: "/home/pdp/docker-compose.yml"  
+    kong_config_path: "/home/pdp/kong.yml"  
 
   tasks:
-    - name: Check if Docker is already installed
-      command: which docker
-      register: docker_check
-      ignore_errors: true
-
-    - name: Install Docker if not present
+    - name: Install Docker
       apt:
         name: docker.io
         state: present
-        update_cache: yes
-      when: docker_check.rc != 0
-
-
-    - name: Ensure target directory exists on PEP VM
-      file:
-        path: "{{ remote_compose_path }}"
-        state: directory
-        mode: '0755'
-
-    - name: Overwrite Docker Compose and Kong config on PEP VM
-      copy:
-        src: "{{ local_compose_path }}/"
-        dest: "{{ remote_compose_path }}/"
-        mode: '0644'
-        directory_mode: '0755'
-        force: yes
-        remote_src: no
-
-    - name: Stop and remove existing Kong container if it exists
-      docker_container:
-        name: kong
-        state: absent  # This will stop and remove the container if it exists
-      ignore_errors: true  # Ignore errors in case the container doesn't exist
-
-    - name: Stop and remove all containers before deploying on the target machine
-      command: docker-compose down --remove-orphans
+      
+    - name: Install Docker Compose
+      shell: |
+        curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        chmod +x /usr/local/bin/docker-compose
+      become: true
       args:
-        chdir: "{{ docker_compose_path | dirname }}"
-      ignore_errors: true  # Ignore errors if there are no running containers
+        creates: /usr/local/bin/docker-compose
 
-    - name: Run Docker Compose
-      community.docker.docker_compose:
-        project_src: "{{ remote_compose_path }}"
-        files:
-          - docker-compose.yml
-          
+
+
+    - name: Download Docker Compose file from GitHub to the target machine
+      get_url:
+        url: "{{ github_docker_compose_url }}"
+        dest: "{{ docker_compose_path }}"
+        mode: '0644'
+
+    - name: Run Docker Compose to deploy Kong API Gateway on the target machine
+      command:
+        cmd: docker-compose up -d  # Run docker-compose on the target machine
+        chdir: "{{ docker_compose_path | dirname }}"

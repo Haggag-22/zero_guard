@@ -35,10 +35,10 @@ jobs:
           PEP_SUDO_PASS: ${{ secrets.PEP_SUDO_PASS }}
         
 
-      # - name: Run Ansible Playbook to Deploy Keycloak
-      #   working-directory: Ansible
-      #   run: |
-      #     ansible-playbook -i ${INVENTORY} ${KEYCLOAK_PLAYBOOK} --extra-vars "ansible_become_pass=${PDP_SUDO_PASS}"
-      #   env:
-      #     PDP_SUDO_PASS: ${{ secrets.PDP_SUDO_PASS }}
+      - name: Run Ansible Playbook to Deploy Keycloak
+        working-directory: Ansible
+        run: |
+          ansible-playbook -i ${INVENTORY} ${KEYCLOAK_PLAYBOOK} --extra-vars "ansible_become_pass=${PDP_SUDO_PASS}"
+        env:
+          PDP_SUDO_PASS: ${{ secrets.PDP_SUDO_PASS }}
         
