@@ -27,12 +27,12 @@ jobs:
         working-directory: /home/control_node/Desktop/zero_guard  
         continue-on-error: true
 
-      # - name: Run Ansible Playbook to Deploy Kong
-      #   working-directory: Ansible
-      #   run: |
-      #     ansible-playbook -i ${INVENTORY} ${KONG_PLAYBOOK} --extra-vars "ansible_become_pass=${PEP_SUDO_PASS}"
-      #   env:
-      #     PEP_SUDO_PASS: ${{ secrets.PEP_SUDO_PASS }}
+      - name: Run Ansible Playbook to Deploy Kong
+        working-directory: Ansible
+        run: |
+          ansible-playbook -i ${INVENTORY} ${KONG_PLAYBOOK} --extra-vars "ansible_become_pass=${PEP_SUDO_PASS}"
+        env:
+          PEP_SUDO_PASS: ${{ secrets.PEP_SUDO_PASS }}
         
 
       - name: Run Ansible Playbook to Deploy Keycloak
