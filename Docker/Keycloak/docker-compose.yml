@@ -2,37 +2,11 @@ version: '3.7'
 
 services:
   keycloak:
-    image: jboss/keycloak:latest
+    image: quay.io/keycloak/keycloak:26.1.4
     environment:
-      - KEYCLOAK_USER=admin  # Replace with your Keycloak admin username
-      - KEYCLOAK_PASSWORD=admin  # Replace with your Keycloak admin password
-      - DB_VENDOR=postgres
-      - DB_ADDR=keycloak-postgres
-      - DB_DATABASE=keycloak
-      - DB_USER=keycloak
-      - DB_PASSWORD=keycloak_password
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
     ports:
-      - "8080:8080"  # Expose port 8080 for accessing Keycloak
-    depends_on:
-      - keycloak-postgres
-    networks:
-      - keycloak-network
-
-  keycloak-postgres:
-    image: postgres:alpine
-    environment:
-      - POSTGRES_USER=keycloak
-      - POSTGRES_PASSWORD=keycloak_password
-      - POSTGRES_DB=keycloak
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - keycloak-network
-
-networks:
-  keycloak-network:
-    driver: bridge
-
-volumes:
-  postgres_data:
-    driver: local
+      - "8080:8080"  # Expose Keycloak on port 8080
+    command: start-dev  # Run Keycloak in development mode
+    restart: unless-stopped  # Automatically restart the container unless manually stopped
