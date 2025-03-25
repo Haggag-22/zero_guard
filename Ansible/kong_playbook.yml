@@ -14,7 +14,7 @@
       ignore_errors: true
 
     - name: Prune unused Docker resources (but keep named volumes)
-      win_shell: docker system prune -f
+      shell: docker system prune -f
       ignore_errors: true
 
     - name: Start Kong API Gateway with Docker Compose
