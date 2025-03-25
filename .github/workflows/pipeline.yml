@@ -26,9 +26,10 @@ jobs:
         continue-on-error: true
 
       - name: Run Kong Container
-        shell: bash
+        shell: pwsh
         run: |
-          docker-compose -f "/c/Users/omhg2/OneDrive/Desktop/ZeroGuard/zero_guard/Docker/Kong_API_Gateway/docker-compose.yml" up -d
+          docker-compose -f "C:/Users/omhg2/OneDrive/Desktop/ZeroGuard/zero_guard/Docker/Kong_API_Gateway/docker-compose.yml" up -d
+      
        
         
 
