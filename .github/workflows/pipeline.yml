@@ -27,10 +27,10 @@ jobs:
           git pull origin main || true
 
 
-      # - name: Run Kong Container
-      #   shell: bash
-      #   run: |
-      #     docker-compose -f "${PROJECT_DIRECTORY}/Docker/Kong_API_Gateway/docker-compose.yml" up -d
+      - name: Run Kong Container
+        shell: bash
+        run: |
+          docker-compose -f "${PROJECT_DIRECTORY}/Docker/Kong_API_Gateway/docker-compose.yml" up -d
 
       # - name: Activate Python Virtual Environment
       #   shell: bash
