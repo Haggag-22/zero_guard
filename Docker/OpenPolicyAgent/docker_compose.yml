@@ -15,7 +15,7 @@ services:
       - "--set=decision_logs.console=true"
       - "/policies"
     volumes:
-      - /home/pdp/zero_guard/OpenPolicyAgent/policies:/policies:ro
+      - /home/omar/zero_guard/OpenPolicyAgent/policies:/policies:ro
     networks:
       - zeroguard-net
 
