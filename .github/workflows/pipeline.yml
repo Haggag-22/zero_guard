@@ -14,10 +14,7 @@ jobs:
       KONG_PLAYBOOK: 'kong_playbook.yml'
       KEYCLOAK_PLAYBOOK: 'keycloak_playbook.yml'
       OPA_PLAYBOOK: 'opa_playbook.yml'
-      PEP_SUDO_PASS: ${{ secrets.PEP_SUDO_PASS }}
-      PDP_SUDO_PASS: ${{ secrets.PDP_SUDO_PASS }}
-
-
+      
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -25,27 +22,26 @@ jobs:
       - name: Pull latest code changes
         run: |
           git pull origin main
-        working-directory: /home/control_node/Desktop/zero_guard  
+        working-directory: ${{ secrets.PROJECT_DIRECTORY }}
         continue-on-error: true
 
-      - name: Run Ansible Playbook to Deploy Kong
-        working-directory: Ansible
+      - name: Run Kong Container
+        shell: bash
         run: |
-          ansible-playbook -i ${INVENTORY} ${KONG_PLAYBOOK} --extra-vars "ansible_become_pass=${PEP_SUDO_PASS}"
-        env:
-          PEP_SUDO_PASS: ${{ secrets.PEP_SUDO_PASS }}
+          docker-compose -f "/c/Users/omhg2/OneDrive/Desktop/ZeroGuard/zero_guard/Docker/Kong_API_Gateway/docker-compose.yml" up -d
+       
         
 
-      - name: Run Ansible Playbook to Deploy Keycloak
-        working-directory: Ansible
-        run: |
-          ansible-playbook -i ${INVENTORY} ${KEYCLOAK_PLAYBOOK} --extra-vars "ansible_become_pass=${PDP_SUDO_PASS}"
-        env:
-          PDP_SUDO_PASS: ${{ secrets.PDP_SUDO_PASS }}
+      # - name: Run Ansible Playbook to Deploy Keycloak
+      #   working-directory: Ansible
+      #   run: |
+      #     ansible-playbook -i ${INVENTORY} ${KEYCLOAK_PLAYBOOK}
+      #   env:
+      #     PDP_SUDO_PASS: ${{ secrets.PDP_SUDO_PASS }}
         
-      - name: Run Ansible Playbook to Deploy OPA
-        working-directory: Ansible
-        run: |
-          ansible-playbook -i ${INVENTORY} ${OPA_PLAYBOOK} --extra-vars "ansible_become_pass=${PDP_SUDO_PASS}"
-        env:
-          PDP_SUDO_PASS: ${{ secrets.PDP_SUDO_PASS }}
+      # - name: Run Ansible Playbook to Deploy OPA
+      #   working-directory: Ansible
+      #   run: |
+      #     ansible-playbook -i ${INVENTORY} ${OPA_PLAYBOOK}
+      #   env:
+      #     PDP_SUDO_PASS: ${{ secrets.PDP_SUDO_PASS }}

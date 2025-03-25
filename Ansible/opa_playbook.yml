@@ -1,5 +1,5 @@
-- name: Deploy Docker Compose Applicatio
-  hosts: pdp
+- name: Deploy OPA Docker Compose
+  hosts: localhost
   become: true
 
   vars:
