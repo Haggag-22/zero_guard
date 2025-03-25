@@ -20,14 +20,14 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Pull latest code changes
-        shell: pwsh
+        shell: powershell
         run: |
           git pull origin main
         working-directory: 'C:/Users/omhg2/OneDrive/Desktop/ZeroGuard/zero_guard'
         continue-on-error: true
 
       - name: Run Kong Container
-        shell: pwsh
+        shell: powershell
         run: |
           docker-compose -f "C:/Users/omhg2/OneDrive/Desktop/ZeroGuard/zero_guard/Docker/Kong_API_Gateway/docker-compose.yml" up -d
       
