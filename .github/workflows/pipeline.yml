@@ -8,42 +8,45 @@ on:
 jobs:
   pipeline:
     runs-on: self-hosted
-    
+
     env:
-      INVENTORY: 'inventory.yml'
-      KONG_PLAYBOOK: 'kong_playbook.yml'
-      KEYCLOAK_PLAYBOOK: 'keycloak_playbook.yml'
-      OPA_PLAYBOOK: 'opa_playbook.yml'
-      
+      INVENTORY: 'Ansible/inventory.yml'
+      KONG_PLAYBOOK: 'Ansible/kong_playbook.yml'
+      KEYCLOAK_PLAYBOOK: 'Ansible/keycloak_playbook.yml'
+      OPA_PLAYBOOK: 'Ansible/opa_playbook.yml'
+      PROJECT_DIRECTORY: '/home/omar/zero_guard' 
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-      
+        
       - name: Pull latest code changes
-        shell: powershell
+        shell: bash
+        working-directory: ${{ env.PROJECT_DIRECTORY }}
         run: |
-          git pull origin main
-        working-directory: 'C:/Users/omhg2/OneDrive/Desktop/ZeroGuard/zero_guard'
-        continue-on-error: true
+          git pull origin main || true
 
-      - name: Run Kong Container
-        shell: powershell
-        run: |
-          docker-compose -f "C:/Users/omhg2/OneDrive/Desktop/ZeroGuard/zero_guard/Docker/Kong_API_Gateway/docker-compose.yml" up -d
-      
-       
-        
 
-      # - name: Run Ansible Playbook to Deploy Keycloak
-      #   working-directory: Ansible
+      # - name: Run Kong Container
+      #   shell: bash
       #   run: |
-      #     ansible-playbook -i ${INVENTORY} ${KEYCLOAK_PLAYBOOK}
-      #   env:
-      #     PDP_SUDO_PASS: ${{ secrets.PDP_SUDO_PASS }}
-        
-      # - name: Run Ansible Playbook to Deploy OPA
-      #   working-directory: Ansible
+      #     docker-compose -f "${PROJECT_DIRECTORY}/Docker/Kong_API_Gateway/docker-compose.yml" up -d
+
+      # - name: Activate Python Virtual Environment
+      #   shell: bash
       #   run: |
-      #     ansible-playbook -i ${INVENTORY} ${OPA_PLAYBOOK}
-      #   env:
-      #     PDP_SUDO_PASS: ${{ secrets.PDP_SUDO_PASS }}
+      #     source "${PROJECT_DIRECTORY}/ansible-env/bin/activate"
+
+      # - name: Run Keycloak Ansible Playbook
+      #   shell: bash
+      #   working-directory: ${{ env.PROJECT_DIRECTORY }}
+      #   run: |
+      #     source ansible-env/bin/activate
+      #     ansible-playbook -i $INVENTORY $KEYCLOAK_PLAYBOOK
+
+      # - name: Run OPA Ansible Playbook
+      #   shell: bash
+      #   working-directory: ${{ env.PROJECT_DIRECTORY }}
+      #   run: |
+      #     source ansible-env/bin/activate
+      #     ansible-playbook -i $INVENTORY $OPA_PLAYBOOK
