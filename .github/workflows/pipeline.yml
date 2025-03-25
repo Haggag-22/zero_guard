@@ -1,4 +1,4 @@
-name: Run the Pipeline
+name: Run the Pipelin
 
 on:
   push:
