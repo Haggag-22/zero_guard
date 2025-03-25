@@ -6,7 +6,6 @@
     docker_compose_path: "/home/omar/zero_guard/Docker/Kong_API_Gateway/docker-compose.yml"
     kong_config_path: "/home/omar/zero_guard/Docker/Kong_API_Gateway/kong.yml"
     secrets: {}
-    var: hostvars[inventory_hostname]
 
   tasks:
     - name: Stop and remove existing Kong containers
