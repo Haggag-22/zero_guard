@@ -17,7 +17,7 @@
       shell: docker system prune -f
       ignore_errors: true
 
-    - name: Start Kong API Gateway with Docker Compose
+    - name: Start Keycloak with Docker Compose
       shell: docker-compose up -d --remove-orphans
       args:
         chdir: "{{ docker_compose_path | dirname }}"

@@ -1,33 +1,14 @@
 - name: Deploy OPA Docker Compose
   hosts: localhost
-  become: true
+  become: false
 
   vars:
-    github_docker_compose_url: "https://raw.githubusercontent.com/Haggag-22/zero_guard/main/Docker/OpenPolicyAgent/docker_compose.yml"
-    docker_compose_path: "/home/pdp/docker-compose.opa.yml"  
+    docker_compose_path: "/home/omar/zero_guard/Docker/OpenPolicyAgent/docker-compose.yml"
+    secrets: {}
 
   tasks:
-    - name: Install Docker
-      apt:
-        name: docker.io
-        state: present
-      
-    - name: Install Docker Compose
-      shell: |
-        curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-        chmod +x /usr/local/bin/docker-compose
-      become: true
-      args:
-        creates: /usr/local/bin/docker-compose
-
-    - name: Download Docker Compose file from GitHub to the target machine
-      get_url:
-        url: "{{ github_docker_compose_url }}"
-        dest: "{{ docker_compose_path }}"
-        mode: '0644'
-
-    - name: Stop and remove existing containers (remove orphans)
-      command: docker-compose -f {{ docker_compose_path }} down --remove-orphans
+    - name: Stop and remove existing Kong containers
+      shell: docker-compose down --remove-orphans
       args:
         chdir: "{{ docker_compose_path | dirname }}"
       ignore_errors: true
@@ -36,7 +17,8 @@
       shell: docker system prune -f
       ignore_errors: true
 
-    - name: Run Docker Compose to deploy OPA
-      command: docker-compose -f {{ docker_compose_path }} up -d --remove-orphans
+    - name: Start OPA with Docker Compose
+      shell: docker-compose up -d --remove-orphans
       args:
         chdir: "{{ docker_compose_path | dirname }}"
+    

@@ -36,3 +36,8 @@ jobs:
         shell: bash
         run: |
           ansible-playbook -i ${{ env.INVENTORY}} ${{ env.KEYCLOAK_PLAYBOOK}}
+
+      - name: Run OPA Container
+        shell: bash
+        run: |
+          ansible-playbook -i ${{ env.INVENTORY}} ${{ env.OPA_PLAYBOOK}}
