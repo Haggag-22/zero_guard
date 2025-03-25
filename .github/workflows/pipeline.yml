@@ -12,8 +12,8 @@ jobs:
     env:
       INVENTORY: '/home/omar/zero_guard/Ansible/inventory.yml'
       KONG_PLAYBOOK: '/home/omar/zero_guard/Ansible/kong_playbook.yml'
-      KEYCLOAK_PLAYBOOK: 'Ansible/keycloak_playbook.yml'
-      OPA_PLAYBOOK: 'Ansible/opa_playbook.yml'
+      KEYCLOAK_PLAYBOOK: '/home/omar/zero_guard/Ansible/keycloak_playbook.yml'
+      OPA_PLAYBOOK: '/home/omar/zero_guard/Ansible/opa_playbook.yml'
       PROJECT_DIRECTORY: '/home/omar/zero_guard' 
 
     steps:
@@ -32,21 +32,7 @@ jobs:
         run: |
           ansible-playbook -i ${{ env.INVENTORY}} ${{ env.KONG_PLAYBOOK}}
 
-      # - name: Activate Python Virtual Environment
-      #   shell: bash
-      #   run: |
-      #     source "${PROJECT_DIRECTORY}/ansible-env/bin/activate"
-
-      # - name: Run Keycloak Ansible Playbook
-      #   shell: bash
-      #   working-directory: ${{ env.PROJECT_DIRECTORY }}
-      #   run: |
-      #     source ansible-env/bin/activate
-      #     ansible-playbook -i $INVENTORY $KEYCLOAK_PLAYBOOK
-
-      # - name: Run OPA Ansible Playbook
-      #   shell: bash
-      #   working-directory: ${{ env.PROJECT_DIRECTORY }}
-      #   run: |
-      #     source ansible-env/bin/activate
-      #     ansible-playbook -i $INVENTORY $OPA_PLAYBOOK
+      - name: Run Keycloak Container
+        shell: bash
+        run: |
+          ansible-playbook -i ${{ env.INVENTORY}} ${{ env.KEYCLOAK_PLAYBOOK}}
