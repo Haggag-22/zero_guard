@@ -17,7 +17,8 @@ services:
       KONG_ADMIN_LISTEN: "0.0.0.0:8001"
       KONG_PROXY_LISTEN: "0.0.0.0:8000, 0.0.0.0:8443 ssl"
     volumes:
-      - ./kong.yml:/etc/kong/kong.yml
+      - /home/omar/zero_guard/Docker/Kong_API_Gateway/kong.yml:/etc/kong/kong.yml
+
     ports:
       - "8000:8000"
       - "8443:8443"
