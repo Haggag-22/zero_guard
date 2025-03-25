@@ -31,11 +31,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - keycloak-net
+      - zeroguard-net
     restart: unless-stopped
 
 volumes:
   postgres_data:
 
 networks:
-  keycloak-net:
+  zeroguard-net:
