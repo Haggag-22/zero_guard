@@ -18,7 +18,7 @@ services:
     depends_on:
       - postgres
     networks:
-      - keycloak-net
+      - zeroguard-net
     restart: unless-stopped
 
   postgres:
