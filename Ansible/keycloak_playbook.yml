@@ -3,20 +3,22 @@
   become: false
 
   vars:
-    docker_compose_path: "C:/Users/omhg2/OneDrive/Desktop/ZeroGuard/zero_guard/Docker/Keycloak/docker-compose.yml"
-  
+    docker_compose_path: "/home/omar/zero_guard/Docker/Keycloak/docker-compose.yml"
+    secrets: {}
+
   tasks:
-    - name: Stop and remove existing containers (if any)
-      command: docker-compose -f {{ docker_compose_path }} down --remove-orphans
+    - name: Stop and remove existing Kong containers
+      shell: docker-compose down --remove-orphans
       args:
         chdir: "{{ docker_compose_path | dirname }}"
       ignore_errors: true
 
-    - name: Prune unused Docker resources (safe cleanup)
-      win_shell: docker system prune -f
+    - name: Prune unused Docker resources (but keep named volumes)
+      shell: docker system prune -f
       ignore_errors: true
 
-    - name: Deploy Keycloak & Postgres with Docker Compose
-      command: docker-compose -f {{ docker_compose_path }} up -d --remove-orphans
+    - name: Start Kong API Gateway with Docker Compose
+      shell: docker-compose up -d --remove-orphans
       args:
         chdir: "{{ docker_compose_path | dirname }}"
+    

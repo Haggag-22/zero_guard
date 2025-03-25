@@ -23,6 +23,3 @@
       args:
         chdir: "{{ docker_compose_path | dirname }}"
     
-    - name: Debug available vars (optional - for investigation)
-      debug:
-        var: hostvars[inventory_hostname]
