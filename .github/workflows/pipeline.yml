@@ -30,7 +30,7 @@ jobs:
       - name: Run Kong Container
         shell: bash
         run: |
-          docker-compose -f "${PROJECT_DIRECTORY}/Docker/Kong_API_Gateway/docker-compose.yml" up -d
+          docker-compose -f "/home/omar/zero_guard/Docker/Kong_API_Gateway/docker-compose.yml" up -d
 
       # - name: Activate Python Virtual Environment
       #   shell: bash
