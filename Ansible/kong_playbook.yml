@@ -23,7 +23,7 @@
         if ! docker network ls --format '{{"{{"}}.Name{{"}}"}}' | grep -q "^zeroguard-net$"; then
           docker network create zeroguard-net
         fi
-      become: true
+      
 
 
     - name: Start Kong API Gateway with Docker Compose
