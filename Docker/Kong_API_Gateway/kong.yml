@@ -1,5 +1,26 @@
 _format_version: "3.0"
 
+plugins:
+  - name: openid-connect
+    config:
+      issuer: http://keycloak:8080/realms/zerotrust
+      auth_methods:
+        - bearer
+      bearer_jwt_auth_enable_hs_signatures: false
+
+  - name: opa
+    config:
+      host: opa:8181
+      policy_path: /v1/data/authz/allow
+      with_credential: false
+      input:
+        method: request.method
+        path: request.path
+        user:
+          id: jwt.sub
+          username: jwt.preferred_username
+          roles: jwt.realm_access.roles
+
 services:
   - name: hello-service
     url: http://hello-world:5678
@@ -8,10 +29,4 @@ services:
         paths:
           - /api/hello
         strip_path: false
-        plugins:
-          - name: openid-connect
-            config:
-              issuer: http://keycloak:8080/realms/zerotrust
-              auth_methods:
-                - bearer
-              bearer_jwt_auth_enable_hs_signatures: false
+        
