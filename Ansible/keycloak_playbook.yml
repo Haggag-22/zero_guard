@@ -1,4 +1,4 @@
-- name: Deploy Keycloak Docker Compos
+- name: Deploy Keycloak Docker Compose
   hosts: localhost
   become: false
 
