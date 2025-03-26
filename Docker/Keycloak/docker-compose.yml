@@ -17,6 +17,8 @@ services:
     command: start-dev
     depends_on:
       - postgres
+    networks:
+      - zeroguard-net
     restart: unless-stopped
 
   postgres:
@@ -37,4 +39,4 @@ volumes:
 
 networks:
   zeroguard-net:
-    external: true
+    driver: bridge
