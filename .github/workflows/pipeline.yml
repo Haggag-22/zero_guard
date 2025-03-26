@@ -25,7 +25,12 @@ jobs:
         working-directory: ${{ env.PROJECT_DIRECTORY }}
         run: |
           git pull origin main || true
-
+      
+      - name: Ensure zeroguard-net network exists
+        run: |
+          if ! docker network ls --format '{{.Name}}' | grep -q "^zeroguard-net$"; then
+            docker network create zeroguard-net
+          fi
 
       - name: Run Kong Container
         shell: bash

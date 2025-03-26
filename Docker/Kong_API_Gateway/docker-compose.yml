@@ -28,7 +28,7 @@ services:
       interval: 10s
       retries: 3
       start_period: 10s
-
+      
 networks:
   zeroguard-net:
-    driver: bridge
+    external: true
