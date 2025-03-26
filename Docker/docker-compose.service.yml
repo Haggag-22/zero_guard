@@ -1,0 +1,8 @@
+services:
+  hello-world:
+    image: hashicorp/http-echo
+    command: ["-text=👋 Hello from Kong Zero Trust setup!"]
+    ports:
+      - "9000:5678"
+    networks:
+      - zeroguard-net
