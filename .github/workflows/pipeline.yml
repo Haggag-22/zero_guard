@@ -10,11 +10,11 @@ jobs:
     runs-on: self-hosted
 
     env:
-      INVENTORY: '/home/omar/zero_guard/Ansible/inventory.yml'
-      KONG_PLAYBOOK: '/home/omar/zero_guard/Ansible/kong_playbook.yml'
-      KEYCLOAK_PLAYBOOK: '/home/omar/zero_guard/Ansible/keycloak_playbook.yml'
-      OPA_PLAYBOOK: '/home/omar/zero_guard/Ansible/opa_playbook.yml'
-      PROJECT_DIRECTORY: '/home/omar/zero_guard' 
+      INVENTORY: ${{ secrets.INVENTORY}}
+      KONG_PLAYBOOK: ${{ secrets.KONG_PLAYBOOK_PATH}}
+      KEYCLOAK_PLAYBOOK: ${{ secrets.KEYCLOAK_PLAYBOOK_PATH}}
+      OPA_PLAYBOOK: ${{ secrets.OPA_PLAYBOOK_PATH}}
+      PROJECT_DIRECTORY: ${{ secrets.PROJECT_DIRECTORY}}
 
     steps:
       - name: Checkout Code

@@ -3,7 +3,7 @@
   become: false
 
   vars:
-    docker_compose_path: "/home/omar/zero_guard/Docker/Keycloak/docker-compose.yml"
+    docker_compose_path: ${{ secrets.KEYCLOAK_DOCKER}}
     secrets: {}
 
   tasks:
