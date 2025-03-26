@@ -9,6 +9,10 @@ services:
       - "1337:1337"
     environment:
       - NODE_ENV=production
+      - DB_ADAPTER=sqlite
+      - DB_URI=/app/konga.db
+    volumes:
+      - konga_data:/app
     networks:
       - zeroguard-net
 
@@ -43,4 +47,7 @@ services:
 networks:
   zeroguard-net:
     external: true
+
+volumes:
+  konga_data:
 
