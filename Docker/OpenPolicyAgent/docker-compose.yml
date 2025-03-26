@@ -21,4 +21,5 @@ services:
 
 networks:
   zeroguard-net:
-    driver: bridge
+    external: true
+
